@@ -99,13 +99,31 @@ display_cols = [
     'CPRI Score', 'Risk Band'
 ]
 
+def colour_cpri(val):
+    if val >= 75:
+        color = '#1A5C38'
+        text = 'white'
+    elif val >= 60:
+        color = '#7B5800'
+        text = 'white'
+    elif val >= 40:
+        color = '#1B3A6B'
+        text = 'white'
+    elif val >= 20:
+        color = '#8B4513'
+        text = 'white'
+    else:
+        color = '#8B1A1A'
+        text = 'white'
+    return f'background-color: {color}; color: {text}'
+
+styled_df = filtered[display_cols].style.applymap(
+    colour_cpri,
+    subset=['CPRI Score']
+)
+
 st.dataframe(
-    filtered[display_cols].style.background_gradient(
-        subset=['CPRI Score'],
-        cmap='RdYlGn',
-        vmin=0,
-        vmax=100
-    ),
+    styled_df,
     use_container_width=True,
     height=350,
     hide_index=True
