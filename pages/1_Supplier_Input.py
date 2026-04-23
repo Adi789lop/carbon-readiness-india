@@ -79,33 +79,37 @@ with st.form("supplier_form"):
     ]
 
     for fid, fname, funit in fuel_list:
-    st.markdown(f"**{fname}**")
-    c1, c2, c3 = st.columns([2, 2, 2])
-    with c1:
-        uses = st.selectbox(
-            "Do you use this?",
-            ["No", "Yes"],
-            key=f"use_{fid}"
-        )
-    with c2:
-        qty = st.number_input(
-            f"Quantity ({funit})",
-            min_value=0.0,
-            value=0.0,
-            key=f"qty_{fid}"
-        )
-    with c3:
-        rel = st.selectbox(
-            "Data Reliability",
-            ["Metered/Invoiced", "Estimate", "Best available"],
-            key=f"rel_{fid}"
-        )
-    if uses == "Yes" and qty > 0:
-        fuels_dict[fid] = qty
-        b1_reliabilities.append(rel)
-    st.markdown("---")
+        st.markdown(f"**{fname}**")
+        c1, c2, c3 = st.columns([2, 2, 2])
+        with c1:
+            uses = st.selectbox(
+                "Do you use this?",
+                ["No", "Yes"],
+                key=f"use_{fid}"
+            )
+        with c2:
+            qty = st.number_input(
+                f"Quantity ({funit})",
+                min_value=0.0,
+                value=0.0,
+                key=f"qty_{fid}"
+            )
+        with c3:
+            rel = st.selectbox(
+                "Data Reliability",
+                ["Metered/Invoiced", "Estimate", "Best available"],
+                key=f"rel_{fid}"
+            )
+        if uses == "Yes" and qty > 0:
+            fuels_dict[fid] = qty
+            b1_reliabilities.append(rel)
+        st.markdown("---")
 
-    b1_rel = "Metered/Invoiced" if all(r == "Metered/Invoiced" for r in b1_reliabilities) else "Mixed" if b1_reliabilities else "Estimate"
+    b1_rel = (
+        "Metered/Invoiced" if all(r == "Metered/Invoiced" for r in b1_reliabilities)
+        else "Mixed" if b1_reliabilities
+        else "Estimate"
+    )
 
     st.markdown("---")
 
