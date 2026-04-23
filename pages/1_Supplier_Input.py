@@ -138,28 +138,80 @@ with st.form("supplier_form"):
 
     st.markdown("---")
 
-    # ── SECTION B3 ────────────────────────────────────────────────────
+   # ── SECTION B3 ────────────────────────────────────────────────────
     st.subheader("Section B3 — Fugitive & Process Emissions")
 
+    st.markdown("**Refrigerants (HVAC / AC Units)**")
     c1, c2, c3 = st.columns(3)
     with c1:
-        has_hvac = st.selectbox("HVAC / AC units on site?", ["No", "Yes"])
+        has_hvac = st.selectbox(
+            "HVAC / AC units on site?",
+            ["No", "Yes"],
+            key="has_hvac"
+        )
     with c2:
-        ref_type = st.selectbox("Refrigerant Type", ["R-22", "R-410A", "R-32", "R-134a", "R-407C"]) if has_hvac == "Yes" else "R-410A"
+        ref_type = st.selectbox(
+            "Refrigerant Type",
+            ["R-22", "R-410A", "R-32", "R-134a", "R-407C"],
+            key="ref_type"
+        )
     with c3:
-        ref_kg = st.number_input("Refrigerant Topped-Up (kg)", min_value=0.0) if has_hvac == "Yes" else 0.0
+        ref_kg = st.number_input(
+            "Refrigerant Topped-Up (kg) — enter 0 if HVAC = No",
+            min_value=0.0,
+            value=0.0,
+            key="ref_kg"
+        )
 
-    c4, c5 = st.columns(2)
-    with c4:
-        has_weld = st.selectbox("MIG/MAG Welding on site?", ["No", "Yes"])
-    with c5:
-        weld_kg = st.number_input(
-            "Welding CO₂ Gas Consumed (kg). For C25 mix: total kg × 0.25",
-            min_value=0.0
-        ) if has_weld == "Yes" else 0.0
+    if has_hvac == "No":
+        ref_kg = 0.0
+        st.caption("✅ No HVAC — refrigerant emissions set to zero.")
+    else:
+        gwp_map = {
+            "R-22": 1810, "R-410A": 2088,
+            "R-32": 675, "R-134a": 1430, "R-407C": 1774
+        }
+        gwp = gwp_map.get(ref_type, 0)
+        if ref_kg > 0:
+            co2e_preview = round(ref_kg * gwp / 1000, 2)
+            st.caption(
+                f"ℹ️ {ref_type} has GWP of {gwp}. "
+                f"Your fugitive CO₂e = {ref_kg} kg × {gwp} ÷ 1000 "
+                f"= **{co2e_preview} tCO₂e**"
+            )
 
     st.markdown("---")
 
+    st.markdown("**MIG/MAG Welding — Process CO₂**")
+    c4, c5 = st.columns(2)
+    with c4:
+        has_weld = st.selectbox(
+            "MIG/MAG Welding on site?",
+            ["No", "Yes"],
+            key="has_weld"
+        )
+    with c5:
+        weld_kg = st.number_input(
+            "Welding CO₂ Gas Consumed (kg) — enter 0 if Welding = No",
+            min_value=0.0,
+            value=0.0,
+            key="weld_kg"
+        )
+
+    if has_weld == "No":
+        weld_kg = 0.0
+        st.caption("✅ No welding — process CO₂ set to zero.")
+    else:
+        if weld_kg > 0:
+            weld_co2e = round(weld_kg / 1000, 4)
+            st.caption(
+                f"ℹ️ For C25 mixed gas (75% Argon, 25% CO₂): "
+                f"multiply total gas kg by 0.25 to get CO₂ component. "
+                f"Your welding CO₂e = {weld_kg} kg ÷ 1000 = **{weld_co2e} tCO₂e**"
+            )
+
+    st.markdown("---")
+    
     # ── SECTION C ─────────────────────────────────────────────────────
     st.subheader("Section C — Scope 2 (Electricity)")
 
