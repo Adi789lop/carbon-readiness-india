@@ -1,0 +1,33 @@
+{
+  "E144570E": {
+    "company": "Minda Test Components",
+    "segment": "Engine & Exhaust",
+    "state": "MAHARASHTRA",
+    "revenue": 200.0,
+    "scope1": 303.98,
+    "scope2_lb": 5986.2,
+    "scope2_mb": 5986.2,
+    "total": 6290.18,
+    "intensity_cr": 31.45,
+    "cpri": 16,
+    "band": "Unaware",
+    "exposure": {
+      "500": {
+        "lakhs": 31.5,
+        "crore": 0.31,
+        "ebitda_pct": 1.6
+      },
+      "1000": {
+        "lakhs": 62.9,
+        "crore": 0.63,
+        "ebitda_pct": 3.1
+      },
+      "2000": {
+        "lakhs": 125.8,
+        "crore": 1.26,
+        "ebitda_pct": 6.3
+      }
+    },
+    "ts": "2026-04-23T12:35:06.986704"
+  }
+}
