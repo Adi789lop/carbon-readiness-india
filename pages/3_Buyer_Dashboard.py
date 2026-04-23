@@ -117,7 +117,7 @@ def colour_cpri(val):
         text = 'white'
     return f'background-color: {color}; color: {text}'
 
-styled_df = filtered[display_cols].style.applymap(
+styled_df = filtered[display_cols].style.map(
     colour_cpri,
     subset=['CPRI Score']
 )
