@@ -56,7 +56,7 @@ with st.form("supplier_form"):
 
     col5, col6 = st.columns(2)
     with col5:
-        production = st.number_input("Annual Production Output (Tonnes, optional)", min_value=0.0)
+        production = st.number_input("Annual Production Output (Units, optional)", min_value=0.0)
     with col6:
         area_sqft = st.number_input("Total Built-up Area (Sq Ft) *", min_value=0.0)
 
@@ -64,7 +64,7 @@ with st.form("supplier_form"):
 
     # ── SECTION B1 ────────────────────────────────────────────────────
     st.subheader("Section B1 — Stationary Combustion (Fuel Usage)")
-    st.caption("Enter 0 if not used.")
+    st.caption("Enter fuel consumed by on-site stationary equipment — diesel generators, boilers, furnaces, process heating. Do NOT include vehicle fuel here.")
 
     fuels_dict = {}
     b1_reliabilities = []
@@ -115,7 +115,7 @@ with st.form("supplier_form"):
 
     # ── SECTION B2 ────────────────────────────────────────────────────
     st.subheader("Section B2 — Mobile Combustion (Company Vehicles)")
-    st.caption("For EV vehicles — electricity consumed for charging should be included in C1 Grid Electricity.")
+    st.caption("Enter fuel consumed by company vehicles only — forklifts, cars, trucks. Do NOT include DG set or boiler diesel here. EV charging electricity goes in Section C1.")
 
     vehicles_list = []
     veh_rows = [
