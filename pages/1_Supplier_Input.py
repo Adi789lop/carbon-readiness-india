@@ -209,9 +209,28 @@ with st.form("supplier_form"):
                 f"multiply total gas kg by 0.25 to get CO₂ component. "
                 f"Your welding CO₂e = {weld_kg} kg ÷ 1000 = **{weld_co2e} tCO₂e**"
             )
+st.markdown("**Data Reliability — Refrigerant & Welding Gas**")
+    b3_reliability = st.selectbox(
+        "How reliable is your refrigerant and welding gas data?",
+        [
+            "Actuals from bills provided",
+            "Approximate Estimate",
+            "Best available estimate"
+        ],
+        key="b3_reliability"
+    )
 
+    reliability_notes = {
+        "Actuals from bills provided":
+            "✅ High reliability — sourced from supplier invoices or maintenance records.",
+        "Approximate Estimate":
+            "⚠️ Medium reliability — based on memory or informal records.",
+        "Best available estimate":
+            "ℹ️ Low reliability — rough guess. Consider improving tracking for better CPRI score."
+    }
+    st.caption(reliability_notes.get(b3_reliability, ""))
     st.markdown("---")
-    
+
     # ── SECTION C ─────────────────────────────────────────────────────
     st.subheader("Section C — Scope 2 (Electricity)")
 
@@ -393,7 +412,9 @@ if submitted:
         'E3_val': E3_value, 'E4': e4_clean, 'E5': E5,
         'F1': f1_clean, 'F2': f2_clean, 'F3': f3_clean,
         'G1': g1_clean, 'G2': g2_clean,
-        'B1_rel': b1_rel, 'C2': c2_source,
+        'B1_rel': b1_rel,
+        'B3_rel': b3_reliability,
+        'C2': c2_source,
         'A4': segment, 'B1_diesel': fuels_dict.get('diesel', 0)
     }
 
